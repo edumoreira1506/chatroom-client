@@ -1,16 +1,21 @@
 import React from 'react'
 import { 
   BrowserRouter,
-  Route,
   Switch
 } from 'react-router-dom';
+import PrivateRoute from './PrivateRoute';
+import PublicRoute from './PublicRoute';
 
 import Login from '../../pages/Login';
+import Chat from '../../pages/Chat';
 
 const Routes = () => (
   <BrowserRouter>
     <Switch>
-      <Route path="/login" exact component={Login} />
+      <PublicRoute path="/" exact component={Login} />
+      <PublicRoute path="/login" exact component={Login} />
+
+      <PrivateRoute path="/chat" exact component={Chat} />
     </Switch>
   </BrowserRouter>
 );
