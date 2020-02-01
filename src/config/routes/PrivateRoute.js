@@ -3,9 +3,10 @@ import {
   Route,
   Redirect
 } from 'react-router-dom';
+import { isAuthenticated } from '../../models/User';
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
-  const authenticated = false;
+  const authenticated = isAuthenticated();
 
   return (
     <Route 
