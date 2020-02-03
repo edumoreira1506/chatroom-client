@@ -4,6 +4,7 @@ import {
   Redirect
 } from 'react-router-dom';
 import { isAuthenticated } from '../../models/User';
+import { routes } from '../constants';
 
 const PublicRoute = ({ component: Component, ...rest }) => {
   const authenticated = isAuthenticated();
@@ -13,7 +14,7 @@ const PublicRoute = ({ component: Component, ...rest }) => {
       { ...rest } 
       render={props => (
         authenticated ? (
-          <Redirect to={{ pathname: '/chat', state: { from: props.location } }} /> 
+          <Redirect to={{ pathname: routes.CHAT, state: { from: props.location } }} /> 
         ) : (
           <Component { ...props} />
         )
