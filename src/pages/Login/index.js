@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { connectToChat } from '../../models/User';
+import { routes } from '../../config/constants';
 
 import './index.scss';
 
@@ -12,7 +13,7 @@ const Login = () => {
     connectToChat(username, {
       onConnected: () => {
         window.localStorage.setItem('username', username);
-        window.location.href = 'chat';
+        window.location.href = routes.CHAT;
       }
     });
   }

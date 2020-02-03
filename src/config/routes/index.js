@@ -4,7 +4,6 @@ import {
 } from 'react-router-dom';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
-
 import Login from '../../pages/Login';
 import Chat from '../../pages/Chat';
 
