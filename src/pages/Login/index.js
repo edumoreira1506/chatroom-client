@@ -1,10 +1,21 @@
 import React, { useState } from 'react';
-import { login } from '../../models/User';
+import { connectToChat } from '../../models/User';
 
 import './index.scss';
 
 const Login = () => {
   const [ username, setUsername ] = useState('');
+
+  const handleLogin = e => {
+    e.preventDefault();
+
+    connectToChat(username, {
+      onConnected: () => {
+        window.localStorage.setItem('username', username);
+        window.location.href = 'chat';
+      }
+    });
+  }
 
   return (
     <section className="Login">
@@ -14,7 +25,7 @@ const Login = () => {
         </h2>
       </div>
       <div className="Login__form-area">
-        <form className="Login__form" onSubmit={e => login(e, username)}>
+        <form className="Login__form" onSubmit={handleLogin}>
           <input
             className="Login__input"
             type="text"
