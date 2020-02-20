@@ -21,13 +21,12 @@ const Chat = ({ username }) => {
   const handleSendMessage = e => {
     e.preventDefault();
 
+    setMessage('');
     sendMessage(message);
   }
 
   const addMessage = newMessage => {
-    const oldMessages = [ ...messages ];
-
-    setMessages([...oldMessages, newMessage]);
+    setMessages(oldMessages => [...oldMessages, newMessage]);
   }
 
   const sendMessage = message => {
