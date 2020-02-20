@@ -1,7 +1,6 @@
 import React from 'react'
-import { 
-  HashRouter
-} from 'react-router-dom';
+import { HashRouter } from 'react-router-dom';
+
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 

@@ -1,20 +1,24 @@
 import io from 'socket.io-client';
-import { socketUrl } from '../config/constants';
+import { socketUrl, routes } from '../config/constants';
+
+export const login = username => {
+  window.localStorage.setItem('username', username);
+  window.location.href = routes.CHAT;
+}
+
+export const logout = () => {
+  window.localStorage.clear();
+  window.location.href = routes.LOGIN;
+}
 
 export const isAuthenticated = () => Boolean(getUsername());
 
 export const getUsername = () => window.localStorage.getItem('username');
 
-export const connectToChat = (username, callback) => {
+export const createSocket = () => {
   const socket = io.connect(socketUrl);
 
-  socket.on('connect', () => {
-    callback.onConnected(socket);
-
-    socket.on('message', message => {
-      callback.onMessage(message);
-    });
-  });
+  return socket;
 }
 
 export const isSender = username => getUsername() === username;

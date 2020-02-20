@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { connectToChat } from '../../models/User';
+import { login } from '../../models/User';
 
 import './index.scss';
 
@@ -9,12 +9,7 @@ const Login = () => {
   const handleLogin = e => {
     e.preventDefault();
 
-    connectToChat(username, {
-      onConnected: () => {
-        window.localStorage.setItem('username', username);
-        window.location.href = 'chat';
-      }
-    });
+    login(username);
   }
 
   return (

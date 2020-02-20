@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { connectToChat, isSender } from '../../models/User';
-import classname from 'classnames';
+import { isSender, logout, createSocket } from '../../models/User';
 import { validate, template } from '../../models/Message';
+import classname from 'classnames';
 
 import './index.scss';
 
@@ -15,30 +15,18 @@ const messageClassName = ({ username }) => classname(
 
 const Chat = ({ username }) => {
   const [ message, setMessage ] = useState('');
-  const [ messages, setMessages ] = useState([{ username: 'Pedro', message: 'alo' }]);
+  const [ messages, setMessages ] = useState([]);
   const [ socket, setSocket ] = useState(null);
-
-  useEffect(() => {
-    connectToChat(username, {
-      onConnected: socketIo => {
-        setSocket(socketIo)
-      },
-      onMessage: addMessage
-    })
-  }, [username]);
 
   const handleSendMessage = e => {
     e.preventDefault();
 
+    setMessage('');
     sendMessage(message);
   }
 
   const addMessage = newMessage => {
-    console.log(messages)
-    console.log(newMessage)
-    const oldMessages = [ ...messages ];
-
-    setMessages([...oldMessages, newMessage]);
+    setMessages(oldMessages => [...oldMessages, newMessage]);
   }
 
   const sendMessage = message => {
@@ -46,13 +34,26 @@ const Chat = ({ username }) => {
       onError: error => alert(error),
       onValidated: () => {
         const newMessage = template(username, message);
-        
+
         socket.emit('message', newMessage);
 
         addMessage(newMessage);
       }
-    })
+    });
   }
+
+  useEffect(() => {
+    const socketIo = createSocket();
+
+    socketIo.on('connect', () => {
+      setSocket(socketIo);
+
+      const message = template(username, `${username} acabou de entrar`);
+
+      socketIo.emit('message', message);
+      socketIo.on('message', addMessage);
+    });
+  }, [username]);
 
   return (
     <section className="Chat">
@@ -84,6 +85,9 @@ const Chat = ({ username }) => {
           />
         </form>
       </div>
+      <button className="Chat__logout" onClick={logout}>
+        Sair
+      </button>
     </section>
   )
 };
